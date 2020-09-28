@@ -75,7 +75,7 @@ public class Main {
 
         String sql;
         if(order_id.equals('*')){
-            sql = "SELECT order_id, orders.item_code, description, quantity, price from orders inner join items on orders.item_code = items.item_code";
+            sql = "SELECT order_id, orders.item_code, description, quantity, price from orders inner join items on orders.item_code = items.item_code;";
         }
         else {
             sql = String.format("SELECT order_id, orders.item_code, description, quantity, price from orders inner join items on orders.item_code = items.item_code WHERE order.order_id = %d;", Integer.parseInt(order_id));
