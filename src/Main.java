@@ -78,7 +78,7 @@ public class Main {
             sql = "SELECT order_id, orders.item_code, description, quantity, price from orders inner join items on orders.item_code = items.item_code";
         }
         else {
-            sql = String.format("SELECT order_id, orders.item_code, description, quantity, price from orders inner join items on orders.item_code = items.item_code WHERE order.order_id = %d", Integer.parseInt(order_id));
+            sql = String.format("SELECT order_id, orders.item_code, description, quantity, price from orders inner join items on orders.item_code = items.item_code WHERE order.order_id = %d;", Integer.parseInt(order_id));
         }
         ResultSet rs = sqlStatement.executeQuery(sql);
 
@@ -123,7 +123,7 @@ public class Main {
             sql = "SELECT * from orders";
         }
         else{
-            sql = String.format("SELECT * FROM orders WHERE item_code = %s", item_code);
+            sql = String.format("SELECT * FROM orders WHERE item_code = %s;", item_code);
         }
         ResultSet rs = sqlStatement.executeQuery(sql);
         while(rs.next()){
@@ -154,7 +154,7 @@ public class Main {
         connection = MySqlDatabase.getDatabaseConnection();
         Statement sqlStatement = connection.createStatement();
 
-        String sql = String.format("DELETE FROM orders WHERE item_code = %s", item_code);
+        String sql = String.format("DELETE FROM orders WHERE item_code = %s;", item_code);
         sqlStatement.executeUpdate(sql);
         connection.close();
     }
@@ -188,7 +188,7 @@ public class Main {
     }
 
     private static Order getOrderFromCode(Statement sqlStatement, String item_code) throws SQLException {
-        ResultSet resultSet = sqlStatement.executeQuery(String.format("SELECT * from orders WHERE item_code = %s", item_code));
+        ResultSet resultSet = sqlStatement.executeQuery(String.format("SELECT * from orders WHERE item_code = %s;", item_code));
 
         resultSet.next();
         Order order = new Order(item_code, resultSet.getInt(2));
@@ -217,10 +217,10 @@ public class Main {
 
         ResultSet resultSet;
         if(item_code.equals('*')) {
-            resultSet = sqlStatement.executeQuery(String.format("SELECT * from items"));
+            resultSet = sqlStatement.executeQuery(String.format("SELECT * from items;"));
         }
         else{
-            resultSet = sqlStatement.executeQuery(String.format("SELECT  from items WHERE items.item_code = %s", item_code));
+            resultSet = sqlStatement.executeQuery(String.format("SELECT  from items WHERE items.item_code = %s;", item_code));
         }
         List<Item> items = new ArrayList<Item>();
         while(resultSet.next()){
@@ -254,7 +254,7 @@ public class Main {
         connection = MySqlDatabase.getDatabaseConnection();
         Statement sqlStatement = connection.createStatement();
 
-        String sql = String.format("DELETE FROM items where items.item_code = %s", item_code);
+        String sql = String.format("DELETE FROM items where items.item_code = %s;", item_code);
 
         sqlStatement.executeUpdate(sql);
         connection.close();
@@ -277,7 +277,7 @@ public class Main {
         connection = MySqlDatabase.getDatabaseConnection();
         Statement sqlStatement = connection.createStatement();
 
-        String sql = String.format("UPDATE items SET inventory_amount = %d where items.item_code = %s",
+        String sql = String.format("UPDATE items SET inventory_amount = %d where items.item_code = %s;",
                 inventory_amount,
                 item_code);
 
@@ -288,7 +288,7 @@ public class Main {
     }
 
     private static Item getItemFromCode(Statement sqlStatement, String item_code) throws SQLException{
-        ResultSet resultSet = sqlStatement.executeQuery(String.format("SELECT * from items WHERE items.item_code = %s", item_code));
+        ResultSet resultSet = sqlStatement.executeQuery(String.format("SELECT * from items WHERE items.item_code = %s;", item_code));
 
         resultSet.next();
         Item item = new Item(resultSet.getInt(0), item_code, resultSet.getString(2), resultSet.getDouble(3), resultSet.getInt(4));
